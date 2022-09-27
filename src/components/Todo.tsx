@@ -9,7 +9,6 @@ const Todo = () => {
   const [inputValue, setInputValue] = useState('')
 
   useEffect(() => {
-    console.log(tasks)
   }, [tasks])
 
   const handleInput = (e:React.ChangeEvent<HTMLInputElement>) => {
