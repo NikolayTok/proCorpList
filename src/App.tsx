@@ -6,8 +6,15 @@ import { Context } from './context'
 import { TaskTypes } from './types'
 import TodoList from './components/TodoList'
 
+const tasksStorage = () => {
+  const tasks = localStorage.getItem('tasks')
+  if (tasks) {
+    return JSON.parse(tasks)
+  }
+}
+
 const App = () => {
-  const [tasks, setTasks] = useState<TaskTypes[]>([])
+  const [tasks, setTasks] = useState<TaskTypes[]>(tasksStorage())
   const nav = useNavigate()
   const getTask = (newTask: TaskTypes) => {
     setTasks([...tasks, newTask])
@@ -15,10 +22,8 @@ const App = () => {
 
   const getSubtask = (id: number, newSubtask: TaskTypes) => {
     setTasks((prevState) =>
-      prevState.map((item, index : number) => {
-        console.log(item.id)
-        console.log(+id)
-        return item.id === +id ? { ...item, SubTask: [newSubtask] } : item 
+      prevState.map((item, index: number) => {
+        return item.id === +id ? { ...item, SubTask: [newSubtask] } : item
       })
     )
   }
@@ -28,7 +33,10 @@ const App = () => {
     nav('/')
   }
 
-  useEffect(() => {}, [tasks])
+  useEffect(() => {
+    localStorage.setItem('tasks', JSON.stringify(tasks))
+  }, [tasks])
+  
   return (
     <div>
       <Context.Provider value={{ tasks, getTask, deleteTask, getSubtask }}>

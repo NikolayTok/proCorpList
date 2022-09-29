@@ -15,19 +15,23 @@ const TodoDetail = () => {
   }
 
   useEffect(() => {
+    fetch('http://localhost:3001/data.json')
+      .then((response) => response.json())
+      .then((json) => console.log(json))
+
     if (id) {
       setSubtaskDetail(tasks[id].SubTask)
     }
-    return ()=>{
+    return () => {
       setSubtaskDetail([])
     }
   }, [tasks, id, subtaskDetail])
 
   return (
-    <div className='flex'>
+    <div className='flex justify-between'>
       {tasks ? (
-        <div className='bg-red'>
-          <div>
+        <div className='bg-[#f87595] p-4 rounded'>
+          <div className='flex rounded items-center justify-between p-3 mb-2 flex-col gap-5'>
             <h2>{id ? tasks[id].author : null}</h2>
             <span>{id ? tasks[id].date : null}</span>
             <span>Task c. {id ? tasks[id].id + 1 : null}</span>
@@ -46,8 +50,9 @@ const TodoDetail = () => {
 
       {subtaskDetail ? (
         <div className='bg-red'>
+          <h2 className='text-xl font-bold'>Subtasks</h2>
           <div>
-            <h2>{subtaskDetail[0].text}</h2>
+            <h3>{subtaskDetail[0].text}</h3>
           </div>
         </div>
       ) : (
